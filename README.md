@@ -2,7 +2,7 @@
 Disciplina de métodos numéricos II, tarefas semanais.
 
 Pacotes necessários:
-    OpenCV
+    OpenCV,
     Pkg-config
 
 
