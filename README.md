@@ -11,5 +11,6 @@ Pacotes necessários:
 
 
 Compile com:
-    ```g++ contorno.cpp ```````pkg-config --libs opencv```
+    ```g++ contorno.cpp `g-config --libs opencv`
+    ```
 
