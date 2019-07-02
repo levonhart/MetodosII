@@ -15,7 +15,10 @@ int main(int argc, char ** argv){
 	VectorXd v(5);
 	v << 0.052,0.482,0.884,0.679,0.357;
 	
+	cout<<"metodo da potencia\n";
 	amb.potencia(A,v,0.001);
+
+	cout<<"metodo da potencia inversa\n";
 	amb.potenciaInversa(A,v,0,0.001);
 	cout << amb.autovalores() << "\n" << amb.autovetores()[4].transpose();
 
