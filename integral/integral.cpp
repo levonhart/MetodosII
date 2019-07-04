@@ -114,5 +114,5 @@ double fun(double x , double *param){
 
 int main(){
 	MN_amb_integral amb(fun,NULL);
-	std::cout << amb.newtonCotes(0.0,3.0,6 ,5,MN_NWTC_ABERTO)<<std::endl;
+	printf("%50.40lf\n", amb.newtonCotes(0.0,1.0,6 ,5,MN_NWTC_ABERTO) );
 }
