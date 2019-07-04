@@ -1,6 +1,5 @@
 #include "integral.h"
 #include <cmath>
-#include <iostream>
 
 MN_amb_integral::MN_amb_integral(double (*f)(double x, double *param), double * param){
 	this->f = f;
@@ -108,11 +107,134 @@ double MN_amb_integral::newtonCotes(double a, double b, int grau, int nparticoes
 
 }
 
-double fun(double x , double *param){
-	return sin(x);
+double MN_amb_integral::gaussLegendre(double a, double b, int npontos, int nparticoes){
+	double 	I = 0,
+			dx = (b-a)/nparticoes,
+			xi, xf, *w, *s;
+	int i,j;
+	
+	double raizes[] = { 0.0, 
+			-(1.0/3.0)*sqrt(3), (1.0/3.0)*sqrt(3),
+			-(1.0/5.0)*sqrt(15), 0.0, (1.0/5.0)*sqrt(15),
+			-(1.0/35.0)*sqrt(525+70*sqrt(30)), -(1.0/35.0)*sqrt(525-70*sqrt(30)), (1.0/35.0)*sqrt(525-70*sqrt(30)), (1.0/35.0)*sqrt(525+70*sqrt(30)) };
+	double pesos[] = { 2.0,
+			1.0,1.0,
+			5.0/9.0, 8.0/9.0, 5.0/9.0,
+			 (1.0/36.0)*(18-sqrt(30)), (1.0/36.0)*(18+sqrt(30)), (1.0/36.0)*(18+sqrt(30)),(1.0/36.0)*(18-sqrt(30)) };
+
+	if(npontos == 1){
+		w = pesos;
+		s = raizes;
+	} else if(npontos == 2){
+		w = pesos+1;
+		s = raizes+1;
+	} else if(npontos == 3){
+		w = pesos+3;
+		s = raizes+3;
+	} else if(npontos == 4){
+		w = pesos+6;
+		s = raizes+6;
+	} else { return NAN; }
+	
+	
+	xi = a;
+	xf = a+dx;
+	for (i = 0; i < nparticoes; i++){
+		for (j = 0; j < npontos; ++j){
+			I += w[j]*f(mudVarLegendre(s[j],xi,xf), param);
+		}
+		xi += dx;
+		xf += dx;
+	}
+	I *= 0.5*dx;
+
+	return I;	
 }
 
-int main(){
-	MN_amb_integral amb(fun,NULL);
-	printf("%50.40lf\n", amb.newtonCotes(0.0,1.0,6 ,5,MN_NWTC_ABERTO) );
+double MN_amb_integral::gaussLaguerre(double a,int npontos){
+	double 	I = 0,
+		*w, *x;
+	int j;
+
+	double raizes[] = { 2-sqrt(2), 2+sqrt(2),
+			0.415775, 2.29428, 6.28995,
+			0.322548, 1.74576, 4.53662, 9.39507};
+	double pesos[] = { 0.25*(2+sqrt(2)), 0.25*(2-sqrt(2)),
+			0.711093, 0.278518, 0.0103893,
+			0.603154, 0.357419, 0.0388879, 0.000539295};
+	if(npontos == 2){
+		w = pesos;
+		x = raizes;
+	} else if(npontos == 3){
+		w = pesos+2;
+		x = raizes+2;
+	} else if(npontos == 4){
+		w = pesos+5;
+		x = raizes+5;
+	} else { return NAN; }
+	
+	for (j = 0; j < npontos; ++j){
+		I += w[j]*f(x[j]+a, param);
+	}
+	I /= exp(a);
+	return I;
 }
+
+double MN_amb_integral::gaussHermite(int npontos){
+
+	double 	I = 0,
+		*w, *x;
+	int j;
+
+	double raizes[] = { -0.5*sqrt(2), 0.5*sqrt(2),
+			-0.5*sqrt(6), 0.0, 0.5*sqrt(6),
+			-sqrt(0.5*(3+sqrt(6))), -sqrt(0.5*(3-sqrt(6))), sqrt(0.5*(3-sqrt(6))), sqrt(0.5*(3+sqrt(6)))};
+	double pesos[] = { 0.5*sqrt(M_PI), 0.5*sqrt(M_PI),
+			(1.0/6.0)*sqrt(M_PI), (2.0/3.0)*sqrt(M_PI), (1.0/6.0)*sqrt(M_PI),
+			sqrt(M_PI)/(4.0*(3+sqrt(6))), sqrt(M_PI)/(4.0*(3-sqrt(6))), sqrt(M_PI)/(4.0*(3-sqrt(6))), sqrt(M_PI)/(4.0*(3+sqrt(6))) };
+	if(npontos == 2){
+		w = pesos;
+		x = raizes;
+	} else if(npontos == 3){
+		w = pesos+2;
+		x = raizes+2;
+	} else if(npontos == 4){
+		w = pesos+5;
+		x = raizes+5;
+	} else { return NAN; }
+	
+	for (j = 0; j < npontos; ++j){
+		I += w[j]*f(x[j], param);
+	}
+	return I;
+}
+double MN_amb_integral::gaussChebyshev(int npontos){
+
+	double 	I = 0,
+		*w, *x;
+	int j;
+
+	double raizes[] = { -0.5*sqrt(2), 0.5*sqrt(2),
+			-0.5*sqrt(3), 0.0, 0.5*sqrt(3),
+			-0.5*sqrt(2+sqrt(2)), 0.5*-sqrt(2-sqrt(2)), 0.5*sqrt(2-sqrt(2)), 0.5*sqrt(2+sqrt(2))};
+	double pesos[] = { 0.5*M_PI, 0.5*M_PI,
+			(1.0/3.0)*M_PI, (1.0/3.0)*M_PI, (1.0/3.0)*M_PI,
+			(M_PI)/(4.0), (M_PI)/(4.0), (M_PI)/(4.0), (M_PI)/(4.0) };
+	if(npontos == 2){
+		w = pesos;
+		x = raizes;
+	} else if(npontos == 3){
+		w = pesos+2;
+		x = raizes+2;
+	} else if(npontos == 4){
+		w = pesos+5;
+		x = raizes+5;
+	} else { return NAN; }
+	
+	for (j = 0; j < npontos; ++j){
+		I += w[j]*f(x[j], param);
+	}
+	return I;
+}
+
+
