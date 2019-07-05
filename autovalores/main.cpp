@@ -49,7 +49,7 @@ int main(int argc, char ** argv){
 	cout<<"metodo de jacobi\n\n";
 	amb.jacobi(A*A.transpose(),MatrixXd::Identity(5,5),EPSILON);
 	U = amb.autovetores();
-	S.block = amb.autovalores().cwiseAbs().cwiseSqrt();
+	S = amb.autovalores().cwiseAbs().cwiseSqrt();
 
 	cout << "autovalores AAt:\n" << amb.autovalores()<<"\n\n";
 	cout << "Sigma:\n" << S << "\n\n";
