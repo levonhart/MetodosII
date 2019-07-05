@@ -49,7 +49,7 @@ int main(int argc, char ** argv){
 	cout<<"metodo de jacobi\n\n";
 	amb.jacobi(A*A.transpose(),MatrixXd::Identity(5,5),EPSILON);
 	U = amb.autovetores();
-	S.block<3,3>(0,0) = amb.autovalores().cwiseAbs().cwiseSqrt().block<3,3>(0,0);
+	S.block = amb.autovalores().cwiseAbs().cwiseSqrt();
 
 	cout << "autovalores AAt:\n" << amb.autovalores()<<"\n\n";
 	cout << "Sigma:\n" << S << "\n\n";
@@ -57,34 +57,34 @@ int main(int argc, char ** argv){
 
 	amb.jacobi(A.transpose()*A,MatrixXd::Identity(5,5),EPSILON);
 	V = amb.autovetores(); 
-	S.block<3,3>(0,0) = amb.autovalores().cwiseAbs().cwiseSqrt().block<3,3>(0,0);
+	S = amb.autovalores().cwiseAbs().cwiseSqrt();
 	cout << "autovalores AtA:\n" << amb.autovalores()<<"\n\n";
 	cout << "Sigma:\n" << S << "\n\n";
 	cout << "V:\n" << V <<"\n\n";
 
 
 	cout << "=====================================================\n";
-	cout << "VSVt:\n" << U*S*V.transpose() <<"\n\n";
+	cout << "USVt:\n" << U*S*V.transpose() <<"\n\n";
  	cout << "=====================================================\n";
 
 
 	cout<<"metodo QR\n\n";
 	amb.qr(A*A.transpose(),MatrixXd::Identity(5,5),EPSILON);
 	U = amb.autovetores();
-	S.block<3,3>(0,0) = amb.autovalores().cwiseAbs().cwiseSqrt().block<3,3>(0,0);
+	S = amb.autovalores().cwiseAbs().cwiseSqrt();
 	cout << "autovalores AAt:\n" << amb.autovalores()<<"\n\n";
 	cout << "Sigma:\n" << S << "\n\n";
 	cout << "U:\n" << U <<"\n\n";
 
 	amb.qr(A.transpose()*A,MatrixXd::Identity(5,5),EPSILON);
 	V = amb.autovetores(); 
-	S.block<3,3>(0,0) = amb.autovalores().cwiseAbs().cwiseSqrt().block<3,3>(0,0);
+	S = amb.autovalores().cwiseAbs().cwiseSqrt();
 	cout << "autovalores AtA:\n" << amb.autovalores()<<"\n\n";
 	cout << "Sigma:\n" << S << "\n\n";
 	cout << "V:\n" << V <<"\n\n";
 
 	cout << "=====================================================\n";
-	cout << "VSVt:\n" << U*S*V.transpose() <<"\n\n";
+	cout << "USVt:\n" << U*S*V.transpose() <<"\n\n";
 
 
 	// cout<<"matriz de house-holder\n\n";
