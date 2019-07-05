@@ -38,7 +38,7 @@ int main(int argc, char ** argv){
 
 
 	u = Contorno1D( xi, xf, uContorno, &coefDx, &coefU, &f, nparticoes);
-	cout << u << endl;
+	cout << "pontos:\n" << u << endl;
 	
 	return 0;
 }

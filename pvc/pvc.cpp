@@ -30,7 +30,6 @@ VectorXd Contorno1D(double xi, double xf, double uContorno, funcaoReal coefDx,
   		A(i+1,i+1) -= A(i,i+1)*A(i+1,i)/A(i,i);
   		b(i+1) -= b(i)*A(i+1,i)/A(i,i);
   		A(i+1,i) = 0.0;
-  		cout << A << "\n\n";
   	}
 
   	b(dim-1) =  b(dim-1)/A(dim-1,dim-1);
